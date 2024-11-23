@@ -1,4 +1,4 @@
-# from sqlalchemy.testing.pickleable import User
+from sqlalchemy.testing.pickleable import User
 
 from app import db, login_manager
 from flask_login import UserMixin # Этот класс дает возможность работать с пользователем

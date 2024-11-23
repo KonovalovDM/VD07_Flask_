@@ -6,7 +6,7 @@
 
 {% block content %}
     <h1>Вход</h1>
-    <form method="POST" action="{{ url_for('login') }}">
+    <form method="POST" action="{{ url_for('main.login') }}">
         {{ form.hidden_tag() }}
         <div>
             {{ form.email.label }}<br>
