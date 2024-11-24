@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>Edit Profile</h1>
-<form method="post" action="">
+<form method="post" action="{{ url_for('main.edit_profile') }}">
     {{ form.hidden_tag() }}
     <p>
         {{ form.username.label }}<br>
@@ -12,14 +12,30 @@
         {{ form.email.label }}<br>
         {{ form.email(size=32) }}
     </p>
-    <p>
-        {{ form.password.label }}<br>
-        {{ form.password(size=32) }}
-    </p>
-    <p>
-        {{ form.confirm_password.label }}<br>
-        {{ form.confirm_password(size=32) }}
-    </p>
+<script>
+function togglePasswordVisibility() {
+    let passwordField = document.getElementById("password");
+    let confirmPasswordField = document.getElementById("confirm_password");
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
+        confirmPasswordField.type = "text";
+    } else {
+        passwordField.type = "password";
+        confirmPasswordField.type = "password";
+    }
+}
+</script>
+
+<p>
+    {{ form.password.label }}<br>
+    {{ form.password(size=32, id="password") }}
+    <input type="checkbox" onclick="togglePasswordVisibility()"> Показать пароль
+</p>
+<p>
+    {{ form.confirm_password.label }}<br>
+    {{ form.confirm_password(size=32, id="confirm_password") }}
+</p>
+
     <p>{{ form.submit() }}</p>
 </form>
 {% endblock %}

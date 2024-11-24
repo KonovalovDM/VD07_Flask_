@@ -1,7 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
-from werkzeug.security import generate_password_hash, check_password_hash
 from app.models import User
 
 class RegistrationForm(FlaskForm):
@@ -33,7 +32,23 @@ class EditProfileForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[
         Length(min=6),
-        EqualTo('confirm_password', message='Passwords must match')
+        EqualTo('confirm_password', message='Пароли должны совпадать')
     ])
     confirm_password = PasswordField('Confirm Password')
     submit = SubmitField('Update Profile')
+
+    def __init__(self, current_user, *args, **kwargs):
+        super(EditProfileForm, self).__init__(*args, **kwargs)
+        self.current_user = current_user
+
+    def validate_username(self, username):
+        if username.data != self.current_user.username:
+            user = User.query.filter_by(username=username.data).first()
+            if user:
+                raise ValidationError('Это имя уже занято.')
+
+    def validate_email(self, email):
+        if email.data != self.current_user.email:
+            user = User.query.filter_by(email=email.data).first()
+            if user:
+                raise ValidationError('Этот email уже используется.')

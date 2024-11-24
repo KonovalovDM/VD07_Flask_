@@ -1,4 +1,5 @@
 from sqlalchemy.testing.pickleable import User
+from app import bcrypt
 
 from app import db, login_manager
 from flask_login import UserMixin # Этот класс дает возможность работать с пользователем
@@ -12,6 +13,9 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), nullable=False, unique=True)
     email = db.Column(db.String(120), nullable=False, unique=True)
     password = db.Column(db.String(60), nullable=False)
+    def set_password(self, password):
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+
 
     def __repr__(self): # Функция, что бы представить информацию о пользователе в виде одной строчки
         return f'User: {self.username}, email: {self.email}'
