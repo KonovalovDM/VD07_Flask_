@@ -17,11 +17,19 @@
             {{ form.password(size=64) }}
         </div>
         <div>
-            {{ form.remember.label }}<br>
-            {{ form.remember }}
+            {{ form.remember }}{{ form.remember.label }}
         </div>
         <div>
             {{ form.submit() }}
+        </div>
+        <div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
         </div>
         
     </form>
